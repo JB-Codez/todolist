@@ -1,0 +1,51 @@
+{% extends 'todoapp/base.html' %}
+{% block title %}To Do App{% endblock %}
+{% block content %}
+
+    <div class="mx-auto bg-[#ffffff] border px-5 py-2 bg-slate-200 rounded-xl">
+        
+
+
+
+        <form action="" method="post" class="max-w-lg">
+            {% csrf_token %}
+            {{ form.task_description }}
+            <!-- button type="submit" class="btn btn-primary w-full">Submit</button>-->
+            <input type="submit" name="submit" value="Submit" class="bg-[#0a97bb] text-white px-5 py-3 mb-3 w-full rounded">
+        </form>
+        
+
+        {% if to_do_list %}
+            <ul>
+                {% for todoitem in to_do_list %}
+                    
+                
+                    <li>
+                        <div class="bg-[#9372c0] border mt-2 mb-2 text-white px-3 py-5 rounded">
+                                    <div class="flex flex-row">
+                                        <div class="basis-9/100 px-1 py-1">
+                                            <form action="{% url 'edit_django_name' todoitem.id %}">
+                                                <input type="submit" name="edit"   value="Edit"   class="text-white bg-[#0a97bb] align-middle py-2 px-4 rounded">
+                                            </form>
+                                        </div>
+                                        <div class="basis-9/100 px-1 py-1">
+                                            <form action="{% url 'delete_django_name' todoitem.id %}">
+                                                <input type="submit" name="Delete" value="Delete" class="text-white bg-[#ffad11] align-middle py-2 px-3 rounded">
+                                            </form>
+                                        </div>
+                                        <div class="basis-75/100 py-2 pl-3"><div class=" align-middle"> #{{todoitem.id}}: {% if todoitem.task_complete %}<span style= "font-style:italic;color:#b1b1cd;text-decoration: line-through" > {% endif %} {{todoitem.task_description}} {% if todoitem.task_complete %} </style>{% endif %}</div></div>
+                                    
+                                    </div>
+                        <div>
+                    </li>
+                {% endfor %}
+            </ul>
+        
+        {% else %}
+            <p>No to do tasks</p>
+        {% endif %}
+
+    </div>
+
+
+{% endblock %}

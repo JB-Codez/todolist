@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <title> {% block title %} {% endblock %} | Web App </title>
+        {% block headlinks %} {% endblock %}
+    </head>
+    <body class="bg-[#5f8bb9] pt-6 pb-10">
+        <div class="container mx-auto bg-white max-w-prose shadow-[0px_22px_70px_4px_rgba(0,0,0,0.56)] rounded-xl">
+            Button space here
+        {% block content %}
+            
+
+        {% endblock %}
+        </div>
+    </body>
+
+</html>
+
