@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
+## SECRET KEY UPDATES
+from dotenv import load_dotenv
+import os
+load_dotenv()
+
+
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,37 +29,55 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wxkb$_jv1^+%yko*10h3jjceo6&6_ry4msl%jnlt)g=i%4l3*a'
+# SECRET_KEY = 'XXXX'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SESSIONS
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # Browser close = reset session
 
 # Application definition
 
 INSTALLED_APPS = [
+    'livereload', # livereload for local testing
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.auth', # built in auth support
+    'django.contrib.contenttypes', # django content permissions /models support
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'todoapp.apps.TodoappConfig',
+    'django.contrib.staticfiles', # static files
+    'todoapp.apps.TodoappConfig', # app # 1
+    'todologin.apps.TodologinConfig', # app #2 - login
+    'crispy_forms', # https://django-crispy-forms.readthedocs.io/en/latest/install.html#installing-django-crispy-forms
+    'crispy_tailwind', # https://pypi.org/project/crispy-tailwind/
+    
 ]
+# pip install crispy-tailwind 
+# https://pypi.org/project/crispy-tailwind/
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind" # https://pypi.org/project/crispy-tailwind/
+CRISPY_TEMPLATE_PACK = 'tailwind'  # https://django-crispy-forms.readthedocs.io/en/latest/install.html#installing-django-crispy-forms
+
+AUTH_USER_MODEL = "todologin.DashboardUser" # new
+LOGIN_REDIRECT_URL = '/home' # login redirect  also acceptable "/" or '/' BUT NOT "" or ''
+LOGOUT_REDIRECT_URL = '/login' # logout redirect
 
 MIDDLEWARE = [
+    'livereload.middleware.LiveReloadScript', # livereload for local testing
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # manage sessions across requests
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware', # associates users w/ requests using ressions
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
-ROOT_URLCONF = 'todolist.urls'
+ROOT_URLCONF = 'todolist.urls' # whre our root routes are established
 
 TEMPLATES = [
     {
@@ -67,6 +94,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'todolist.wsgi.application'
 
@@ -102,11 +131,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topics/i18n/ # location of time zones
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-us' # our language
 
-TIME_ZONE = 'America/New_York'
+TIME_ZONE = 'America/New_York' # dev time zone
 
 USE_I18N = True
 
@@ -116,9 +145,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' 
+
+### {11a} https://stackoverflow.com/a/58394924/22411012
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'todolist/static/')
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#### {11a}
+
+### {12a - refactor for IMGs - https://youtu.be/CA5duCGDSUE }
+#https://docs.djangoproject.com/en/4.2/ref/models/fields/
+MEDIA_URL = 'media/' # created by 1st user upload
+MEDIA_ROOT = os.path.join(BASE_DIR, 'todolist/media')
+
+### {12a - refactor for IMGs - https://youtu.be/CA5duCGDSUE }
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

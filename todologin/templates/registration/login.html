@@ -1,0 +1,36 @@
+{% extends 'todoapp/base.html' %}
+{% block title %}Login {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block headlinks %} 
+
+{% endblock %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+
+    <div class="flex justify-center bg-[#ffffff] border px-5 py-2 bg-slate-200 rounded-xl">
+
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="flex justify-center">
+            <form class = "flex row mx-auto justify-center" method="post">
+                {% csrf_token %}{{ form | crispy }}
+                <div class="flex justify-center m-2">
+                    <button type="submit" class="mx-auto bg-[#087E8B] px-3 py-2 text-[#F5F5F5] rounded-2xl">Login</button>
+                </div>
+                <p class="m-2 text-center text-sm"> Don't have an account? Create one <a href="{%url 'todologin:signup_in_django' %}"><strong>Here!</strong></a>!</p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -5,11 +5,9 @@
 {% block headlinks %} 
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-    
-    .revalia {font-family: 'Revalia', cursive;}
-    .creepster{ font-family: 'Creepster', cursive} ;
+
+
+
 
 </style>
 {% endblock %}
@@ -17,25 +15,33 @@
 
 
 
-    <!--<form action="" method="post" class=" border mx-auto max-w-lg bg-slate-50 pt-10 pb-5 p-10">-->
-    <form action="" method="post" class="mx-auto bg-[#ffffff] border px-5 py-2 bg-slate-200 border pt-5 rounded-xl">
+    <form action="" method="post" class="mx-auto bg-slate-200 border px-3 py-2 pt-5 rounded-xl">
 
         {% csrf_token %}
-        <div class="text-center creepster text-6xl text-neutral-800" > Update Task</div>
+        <div class="text-neutral-800 text-center text-2xl" > Update Task</div>
+        <div class="pt-6 text-neutral-800 text-center text-xs" > Edit this task in the box below: </div>
         {{ form.task_description }}
 
 
-        <div class="grid grid-rows-1 grid-flow-col gap-1 "> 
-            <div class="row-start-1 row-span-1 "><div class="text-center text-l text-neutral-800 align-middle" > Task Complete</div></div>
-            <div class="row-start-1 row-span-1 ">  <div class="">{{ form.task_complete }}</div></div>
-            <div class="row-start-1 row-span-1 "><div class=" text-center  text-red-400" >Classified</div></div>
+        <div class="flex flex-row justify-center gap-5"> 
+            <div class="basis-1/2"> <div class="text-neutral-800 text-center text-l" > Task Complete</div></div>
+            <div class="basis-1/2"> <div class="text-neutral-800 text-center text-l" > Private Task</div></div>
         </div>
 
 
+        <div class="flex">
+            <div class="m-auto">
+                    <div class="">{{ form.task_complete }}</div>    
+            </div>
+            <div class="m-auto">
+                <div class="">{{ form.task_is_private }}</div>    
+            </div>
+        </div>
 
 
-        
-        <input type="submit" name="submit" value="Submit" class="bg-[#0a97bb] text-3xl creepster text-white px-5 py-5 mt-10 mb-3 w-full rounded">
+        <div class="flex mt-10 mb-6">
+            <input type="submit" name="submit" value="Submit" class="m-auto bg-[#0a97bb] px-4 py-2 text-white text-2xl rounded">
+        </div>
     </form>
 
 {% endblock %}

@@ -1,8 +1,12 @@
 {% extends 'todoapp/base.html' %}
-{% block title %}To Do App{% endblock %}
+{% block title %}Task WebApp{% endblock %}
+{% block headlinks %} 
+    {% load static %}
+    
+{% endblock %}
 {% block content %}
 
-    <div class="mx-auto bg-[#ffffff] border px-5 py-2 bg-slate-200 rounded-xl">
+    <div class="mx-auto bg-slate-200 border px-5 py-2  rounded">
         
 
 
@@ -10,31 +14,147 @@
         <form action="" method="post" class="max-w-lg">
             {% csrf_token %}
             {{ form.task_description }}
-            <!-- button type="submit" class="btn btn-primary w-full">Submit</button>-->
-            <input type="submit" name="submit" value="Submit" class="bg-[#0a97bb] text-white px-5 py-3 mb-3 w-full rounded">
+            <input type="submit" name="submit" value="Submit" class="w-full bg-[#087E8B] px-5 py-3 mb-3 text-white text-lg rounded">
         </form>
+
+
         
 
         {% if to_do_list %}
-            <ul>
+
+
+
+
+
+            <ul class="mb-10">
                 {% for todoitem in to_do_list %}
-                    
-                
-                    <li>
-                        <div class="bg-[#9372c0] border mt-2 mb-2 text-white px-3 py-5 rounded">
-                                    <div class="flex flex-row">
-                                        <div class="basis-9/100 px-1 py-1">
-                                            <form action="{% url 'edit_django_name' todoitem.id %}">
-                                                <input type="submit" name="edit"   value="Edit"   class="text-white bg-[#0a97bb] align-middle py-2 px-4 rounded">
-                                            </form>
+                <li>
+                   <div 
+
+
+       
+                       
+
+
+                        {% if todoitem.task_is_private != False and todoitem.task_author == current_user %}
+                            
+
+
+                            class="bg-gradient-to-r from-[#D46A55] to-[#B0A8B9] px-3 py-5 mt-2 mb-2 text-white rounded" 
+
+                        {% elif todoitem.task_is_private != False and todoitem.task_author != current_user %}
+                            style="filter:brightness(40%);
+
+                            "
+                            class="bg-[#442976] px-3 py-5 mt-2 mb-2 text-white rounded" 
+                        {% else %}
+
+                            class="bg-gradient-to-r from-[#a28872] to-[#E8D5B5] mt-2 mb-2 px-3 py-5 text-white rounded" 
+
+                        {% endif %}
+                        
+
+                        >
+
+
+                                    <div class="flex flex-row items-center">
+                                        <!-- BUTTONS -->
+                                        <!-- DEBUG:: {/{current_user}/} -->
+                                        <!-- DEBUG:: {/{ todoitem.task_author}/} -->
+                                        <!-- NO logic here, display all pics -->
+                                        <div class=" px-1 ">
+
+                                            {% if todoitem.task_is_private != False  %}
+                                                <!-- The task is Private THANKFULLY the current user is the author! TRUE -->
+                                                {% if  todoitem.task_author == current_user %} 
+                                                    <form action="{% url 'todoapp:edit_django_name' todoitem.id %}">
+                                                        {% csrf_token %}
+                                                        <input type="submit" name="edit"   value="Edit"   class="bg-[#087E8B] px-4 py-2 text-white rounded">
+                                                    </form>
+                                                {% else %}
+                                                <form action="">
+                                                    {% csrf_token %}
+                                                    <input type="submit" name="edit"  disabled value="Edit"   class="bg-[#087E8B] px-4 py-2 text-white rounded">
+                                                </form>
+                                                {% endif %}
+                                            {% elif todoitem.task_is_private != False and todoitem.task_author != current_user %}
+                                                <!-- The task is Private AND the current user is not the author! Hidden -->
+                                                <!-- might not trigger -->
+                                                <form action="" style="filter:brightness(60%)">
+                                                    {% csrf_token %}
+                                                    <input type="submit" name="edit"   disabled value="Edit"   class="bg-[#087E8B] px-4 py-2 text-white rounded">
+                                                </form>
+                                            {% else %}
+                                                <!-- Public task AND not logged in -->
+                                                <form action="{% url 'todoapp:edit_django_name' todoitem.id %}" style="">
+                                                    {% csrf_token %}
+                                                    <input type="submit" name="edit"   value="Edit"   class="bg-[#087E8B] px-4 py-2 text-white rounded">
+                                                </form>
+                                            {% endif %}
+
                                         </div>
-                                        <div class="basis-9/100 px-1 py-1">
-                                            <form action="{% url 'delete_django_name' todoitem.id %}">
-                                                <input type="submit" name="Delete" value="Delete" class="text-white bg-[#ffad11] align-middle py-2 px-3 rounded">
-                                            </form>
+
+                                        <div class="flex-initial">
+
+                                            {% if todoitem.task_is_private != False  %} 
+                                                <!-- The task is Private THANKFULLY the current user is the author! TRUE --> 
+                                                {% if  todoitem.task_author == current_user %} 
+                                                    <form action="{% url 'todoapp:delete_django_name' todoitem.id %}">
+                                                        {% csrf_token %}
+                                                        <input type="submit" name="Delete" value="Delete" class="bg-[#8D7257] px-3 py-2 text-white rounded">
+                                                    </form>
+                                                {% else %}
+                                                    <!-- The task is Private AND the current user is not the author! Hidden --> 
+                                                    <form action="">
+                                                        {% csrf_token %}
+                                                        <input type="submit" name="Delete" disabled value="Delete" class="bg-[#8D7257] px-3 py-2 text-white rounded">
+                                                    </form>
+                                                {% endif %}
+                                            {% elif todoitem.task_is_private != False and todoitem.task_author != current_user %}
+                                                <!-- The task is Private AND the current user is not the author! Hidden --> 
+                                                <form action="" style="filter:brightness(60%)">
+                                                    {% csrf_token %}
+                                                    <input type="submit" name="Delete" disabled value="Delete" class="bg-[#8D7257] px-3 py-2 text-white rounded">
+                                                </form>
+                                            {% else %}
+                                               <!-- Public task AND not logged in --> 
+                                                <form action="{% url 'todoapp:delete_django_name' todoitem.id %}" style="">
+                                                    {% csrf_token %}
+                                                    <input type="submit" name="Delete"  value="Delete" class="bg-[#8D7257] px-3 py-2 text-white rounded">
+                                                </form>
+                                            {% endif %}
                                         </div>
-                                        <div class="basis-75/100 py-2 pl-3"><div class=" align-middle"> #{{todoitem.id}}: {% if todoitem.task_complete %}<span style= "font-style:italic;color:#b1b1cd;text-decoration: line-through" > {% endif %} {{todoitem.task_description}} {% if todoitem.task_complete %} </style>{% endif %}</div></div>
-                                    
+
+
+
+
+                                        <!-- LIGHTS -->
+                                        <div class="px-2 pb-2">
+                                            <div class="  ">
+                                                {% if todoitem.task_complete %}
+                                                    <div class="bg-lime-400 rounded-full" style="height: 10px; width: 10px; "></div>                                       
+                                                {% else %}
+                                                    <div class="bg-[#FBD73C] rounded-full" style="height: 10px; width: 10px; "></div>
+                                                {% endif %} 
+                                            </div>
+                                        </div>
+                                        <!-- TASK DESCRIPTION -->
+                                        <div class="grow text-white text-left">
+                                            <div class=" ">  
+                                                {% if todoitem.task_complete %}
+                                                    <span style= "font-style:italic;color:#110e0b;text-decoration: line-through" > 
+                                                {% endif %} 
+                                                <strong>{{todoitem.task_description}}</strong>
+                                                {% if todoitem.task_complete %} 
+                                                    </style>
+                                                {% endif %}
+
+
+
+                                                <br><div class="mt-2 text-amber-950 text-right text-xs">- Task Owner:{% if todoitem.task_author == current_user%} {{todoitem.task_author}} {% elif todoitem.task_is_private != True %} {{todoitem.task_author}}  {% else %} Private{% endif %} </div>
+
+                                            </div>
+                                        </div>
                                     </div>
                         <div>
                     </li>
@@ -42,10 +162,7 @@
             </ul>
         
         {% else %}
-            <p>No to do tasks</p>
+            <p>~/~ NO TASKS FOUND ~/~</p>
         {% endif %}
-
     </div>
-
-
 {% endblock %}

@@ -5,11 +5,8 @@
 {% block headlinks %} 
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-    
-    .revalia {font-family: 'Revalia', cursive;}
-    .creepster{ font-family: 'Creepster', cursive} ;
+
+
 
 </style>
 {% endblock %}
@@ -17,18 +14,17 @@
 
 
 
-    <!--<form action="" method="post" class=" border mx-auto max-w-lg bg-slate-50 pt-10 pb-5 p-10">-->
-    <form action="" method="post" class="mx-auto bg-[#ffffff] border px-5 py-2 bg-slate-200 border pt-5 rounded-xl">
+    <form action="" method="post" class="mx-auto bg-slate-200 border px-5 py-2 pt-5 rounded-xl">
 
         {% csrf_token %}
-        <div class="text-center creepster text-6xl text-neutral-800 " > Delete Task</div>
+        <div class="text-neutral-800 text-center text-2xl" > Delete Task</div>
 
         <div class="grid grid-rows-1 grid-flow-col gap-1 "> 
             <div class="row-start-1 row-span-1 ">
-                <div class="text-center text-l text-neutral-800 align-middle  pt-6" > 
+                <div class="pt-6 text-neutral-800 text-center text-xs" > 
                     Are you sure you want to delete the following task: 
-                    <div class="mt-6 mb-6 pt-10 pb-16 bg-sky-50"> 
-                        <p style="font-style:italic">
+                    <div class="bg-sky-50 mt-6 mb-6 pt-10 pb-16"> 
+                        <p style="font-style:italic " class="text-lg">
                         {{ taskDescription }}
                         </p>
                     </div>
@@ -37,15 +33,18 @@
         </div>
 
 
-
-        <input type="submit" name="submit-deletion" value="Yes" class="bg-red-600 text-3xl creepster text-white px-5 py-5 mt-6 mb-3 w-full rounded">
-        <div class="flex flex-row mb-6 ">
-            <div class="w-14"></div>
-            <div class="grow w-5/6"> <!-- take up entire row = grow-->
-                <input type="submit" name="cancel-deletion" value="Cancel" class="bg-stone-400 text-xl creepster text-neutral-600 w-full rounded">      <!--# px-5 py-2 mt-5 mb-3-->
-            </div>
-            <div class="w-14"></div>
+        <div class="flex ">
+            <input type="submit" name="submit-deletion" value="Yes" class="m-auto bg-red-600 px-10 py-2 text-white text-2xl rounded">
         </div>
+ 
+        
+        <div class="flex pt-2 pb-2">
+            <input type="submit" name="cancel-deletion" value="Cancel" class="m-auto bg-[#0a97bb] px-4 py-2 text-white text-2xl rounded">
+        </div>
+
+ 
+
+
     </form>
 
 {% endblock %}
